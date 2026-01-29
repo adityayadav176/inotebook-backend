@@ -16,9 +16,6 @@ const fetchuser = (req, res, next) => {
         res.status(401).send({ error: "Please authenticate using a valid token" })
          console.error(error.message)
     }
-    console.log("RAW TOKEN:", token);
-console.log("TOKEN PARTS:", token.split('.').length);
-
 }
 
 module.exports = fetchuser;

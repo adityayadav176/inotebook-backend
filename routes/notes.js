@@ -14,7 +14,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
     }
 })
 
-//ROUTE 1 add a new note using: Post "/api/notes/addnote".login required
+//ROUTE 2 add a new note using: Post "/api/notes/addnote".login required
 router.post('/addnote', fetchuser, [
     body('title', 'Title must be atleast 3 Characters').isLength({ min: 3 }),
     body('description', 'Description must be atleast 8 Characters').isLength({ min: 8 }),
@@ -36,5 +36,26 @@ router.post('/addnote', fetchuser, [
         res.status(500).send("Internal Server Error");
         console.error(error.message)
     }
+})
+//ROUTE 3 Update note using:Put "/api/notes/updatenote/:id".login required
+router.put('/updatenote/:id', fetchuser, async (req, res) => {
+     const {title, description, tag } = req.body;
+     //Create a newNote object
+     const newNote = {};
+     if(title){newNote.title = title};
+     if(description){newNote.description = description};
+     if(tag){newNote.tag = tag};
+
+     //Find the note to be updated and updated it
+     let note = await Note.findById(req.params.id);
+     if(!note){
+       return res.status(404).send("Not Found");
+     }
+     if(note.user.toString() !== req.user.id){
+        return res.status(401).send("Not Allowed");
+     }
+
+     note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new: true})
+     res.json({note});
 })
 module.exports = router
