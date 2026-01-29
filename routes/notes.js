@@ -37,6 +37,7 @@ router.post('/addnote', fetchuser, [
         console.error(error.message)
     }
 })
+
 //ROUTE 3 Update note using:Put "/api/notes/updatenote/:id".login required
 router.put('/updatenote/:id', fetchuser, async (req, res) => {
     const { title, description, tag } = req.body;
@@ -66,7 +67,6 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
 
 //ROUTE 4 delete an existing note:DELETE "/api/notes/deletenote/:id".login required
 router.delete('/deletenote/:id', fetchuser, async (req, res) => {
-    // const { title, description, tag } = req.body;
     try {
     //Find the note to deleted and deleted it
     let note = await Note.findById(req.params.id);
