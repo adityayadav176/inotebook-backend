@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser.js');
 
-
 const JWT_SECRET = "Mynameisaditya"
 
 //ROUTE 1 Create a User using: POST "/api/auth/createuser". No login required  
@@ -63,11 +62,11 @@ router.post('/login', [
     try {
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: "Please try to login with correct credentials" });
+            return res.status(400).json({ error: "Please Try To Login With Correct Credentials" });
         }
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
-            return res.status(400).json({ error: "Please try to login with correct credentials" });
+            return res.status(400).json({ error: "Please Try To Login With Correct Credentials" });
         }
 
         const data = {
@@ -90,8 +89,8 @@ try {
     const user = await User.findById(userId).select("-password")
     res.send(user);
 } catch (error) {
-     res.status(500).send("Internal Server Error"); 
      console.error(error.message);
+     res.status(500).send("Internal Server Error"); 
 }
 })
 module.exports = router;
